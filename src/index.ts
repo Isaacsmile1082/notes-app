@@ -3,7 +3,9 @@ import notesRouter from './routes/notes';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 
-main().then((res) => console.log(res)).catch(err => console.log(err));
+main()
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 
 async function main() {
     await mongoose.connect('mongodb://localhost:27017/notes');

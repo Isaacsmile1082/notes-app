@@ -1,6 +1,5 @@
 import { checkSchema } from 'express-validator';
 
-
 export const createNoteCheckSchema = checkSchema({
     title: {
         in: ['body'],

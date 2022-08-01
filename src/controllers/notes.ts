@@ -3,7 +3,10 @@ import { validationResult } from 'express-validator';
 import express from 'express';
 import Note from '../schemas/Notes';
 
-export const createNote = async (req: express.Request, res: express.Response) => {
+export const createNote = async (
+    req: express.Request,
+    res: express.Response
+) => {
     const result = validationResult(req);
     if (result.array().length) {
         return res.json({
@@ -27,7 +30,10 @@ export const createNote = async (req: express.Request, res: express.Response) =>
     }
 };
 
-export const deleteNote = async (req: express.Request, res: express.Response) => {
+export const deleteNote = async (
+    req: express.Request,
+    res: express.Response
+) => {
     const result = validationResult(req);
     if (result.array().length) {
         return res.json({
@@ -46,10 +52,13 @@ export const deleteNote = async (req: express.Request, res: express.Response) =>
             ok: false,
             error
         });
-    };
+    }
 };
 
-export const updateNote = async (req: express.Request, res: express.Response) => {
+export const updateNote = async (
+    req: express.Request,
+    res: express.Response
+) => {
     const result = validationResult(req);
     if (result.array().length) {
         return res.json({
@@ -74,5 +83,5 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
             ok: false,
             error
         });
-    };
+    }
 };
