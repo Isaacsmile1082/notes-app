@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 export interface INotes {
     title: string;
-    author: string;
+    author: mongoose.Schema.Types.ObjectId;
     description: string;
     image: string;
     date: Date;

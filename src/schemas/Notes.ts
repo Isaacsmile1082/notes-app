@@ -1,25 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import { INotes } from './../types/Notes.d';
 import { Schema } from 'mongoose';
 
-const notesSchema = new Schema<INotes>(
-    {
-        title: String,
-        author: String,
-        description: String,
-        date: Date,
-        favorite: Boolean,
-        image: String
+const notesSchema = new Schema<INotes>({
+    title: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
     },
-    {
-        methods: {
-            findByAuthor(authorArg) {
-                return mongoose
-                    .model('Notes')
-                    .find({ author: this.author }, authorArg);
-            }
-        }
-    }
-);
+    description: String,
+    date: Date,
+    favorite: Boolean,
+    image: String
+});
 
 export default mongoose.model('Notes', notesSchema);
