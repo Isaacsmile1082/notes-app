@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import { INotes } from './../types/Notes.d';
 import { Schema } from 'mongoose';
 

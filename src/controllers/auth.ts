@@ -23,7 +23,7 @@ export const signUp: RequestHandler = async (req, res) => {
             data: newUser
         });
     } catch (error) {
-
+        console.error(error);
         return res.status(409).send(error);
     }
 };
@@ -55,7 +55,7 @@ export const signIn: RequestHandler = async (req, res) => {
             });
         });
     } catch (error) {
-
+        console.error(error);
         return res.status(401).send(error);
     }
 };
