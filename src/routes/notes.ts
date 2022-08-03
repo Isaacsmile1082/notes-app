@@ -21,10 +21,10 @@ router.get('/', async (req, res) => {
     });
 });
 
-router.post('/', validateInput, createNoteCheckSchema, createNote);
+router.post('/', createNoteCheckSchema, validateInput, createNote);
 
-router.delete('/', validateInput, deleteNoteCheckSchema, deleteNote);
+router.delete('/', deleteNoteCheckSchema, validateInput, deleteNote);
 
-router.patch('/', validateInput, updateNoteCheckSchema, updateNote);
+router.patch('/', updateNoteCheckSchema, validateInput, updateNote);
 
 export default router;

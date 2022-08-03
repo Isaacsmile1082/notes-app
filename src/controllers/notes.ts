@@ -2,10 +2,7 @@ import { TDocNotes } from './../types/Notes.d';
 import { RequestHandler } from 'express';
 import Note from '../schemas/Notes';
 import jwt from 'jsonwebtoken';
-export const createNote: RequestHandler = async (
-    req,
-    res
-) => {
+export const createNote: RequestHandler = async (req, res) => {
     const encoded: jwt.JwtPayload | undefined = req.user;
     const note = new Note({
         ...req.body,
@@ -19,6 +16,7 @@ export const createNote: RequestHandler = async (
             note
         });
     } catch (error) {
+        console.error(error);
         res.json({
             ok: false,
             error
@@ -26,17 +24,18 @@ export const createNote: RequestHandler = async (
     }
 };
 
-export const deleteNote: RequestHandler = async (
-    req,
-    res
-) => {
+export const deleteNote: RequestHandler = async (req, res) => {
     try {
         const encoded: jwt.JwtPayload | undefined = req.user;
-        await Note.findOneAndDelete({ _id: req.body._id, author: encoded?.data?._id });
+        await Note.findOneAndDelete({
+            _id: req.body._id,
+            author: encoded?.data?._id
+        });
         return res.json({
             ok: true
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             ok: false,
             error
@@ -44,25 +43,28 @@ export const deleteNote: RequestHandler = async (
     }
 };
 
-export const updateNote: RequestHandler = async (
-    req,
-    res
-) => {
+export const updateNote: RequestHandler = async (req, res) => {
     const { _id, ...rest }: TDocNotes = req.body;
     const encoded: jwt.JwtPayload | undefined = req.user;
 
     try {
-        const updatedNote = await Note.findOneAndUpdate({
-            id: _id, author: encoded?.data?._id
-        }, rest, {
-            returnDocument: 'after'
-        });
+        const updatedNote = await Note.findOneAndUpdate(
+            {
+                id: _id,
+                author: encoded?.data?._id
+            },
+            rest,
+            {
+                returnDocument: 'after'
+            }
+        );
 
         return res.json({
             ok: true,
             updatedNote
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             ok: false,
             error

@@ -4,10 +4,11 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import authRouter from './routes/auth';
 import 'dotenv/config';
+import './logger';
 
 main()
     .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 
 async function main() {
     await mongoose.connect('mongodb://localhost:27017/notes');

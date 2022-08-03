@@ -20,7 +20,7 @@ export const createUser = async (userData: IUser) => {
         await user.save();
         return user;
     } catch (error) {
-
+        console.error(error);
         throw new Error('Error while saving');
     }
 };
@@ -32,30 +32,32 @@ export const findUser = async (
         const user = await User.findOne({ email: userCredentials.email });
         return user;
     } catch (error) {
-
+        console.error(error);
         throw new Error('Error performing finding user');
     }
 };
 
-export const updateUser: RequestHandler = async (
-    req,
-    res
-) => {
+export const updateUser: RequestHandler = async (req, res) => {
     const data: IUser = req.body;
     const encoded: jwt.JwtPayload | undefined = req.user;
 
     try {
-        const updatedNote = await User.findOneAndUpdate({
-            id: encoded?.data?._id
-        }, data, {
-            returnDocument: 'after'
-        });
+        const updatedUser = await User.findOneAndUpdate(
+            {
+                id: encoded?.data?._id
+            },
+            data,
+            {
+                returnDocument: 'after'
+            }
+        );
 
         return res.json({
             ok: true,
-            updatedNote
+            updatedUser
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             ok: false,
             error
@@ -63,10 +65,7 @@ export const updateUser: RequestHandler = async (
     }
 };
 
-export const deleteNote: RequestHandler = async (
-    req,
-    res
-) => {
+export const deleteNote: RequestHandler = async (req, res) => {
     try {
         const encoded: jwt.JwtPayload | undefined = req.user;
         await User.findOneAndDelete({ _id: encoded?.data?._id });
@@ -74,6 +73,7 @@ export const deleteNote: RequestHandler = async (
             ok: true
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             ok: false,
             error

@@ -5,6 +5,7 @@ export const validateInput: RequestHandler = (req, res, next) => {
     validationResult(req);
     const result = validationResult(req);
     if (result.array().length) {
+        console.error(result.array());
         return res.status(400).send({
             errors: result.array()
         });

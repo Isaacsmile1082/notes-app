@@ -16,6 +16,7 @@ export const verifyToken: RequestHandler = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
+        console.error(error);
         return res.status(409).send({ error });
     }
 };
