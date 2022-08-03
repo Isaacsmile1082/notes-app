@@ -2,6 +2,8 @@ import express from 'express';
 import notesRouter from './routes/notes';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import authRouter from './routes/auth';
+import 'dotenv/config';
 
 main()
     .then((res) => console.log(res))
@@ -16,6 +18,7 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.json()); // for parsing application/json
+app.use('/auth', authRouter);
 app.use('/notes', notesRouter);
 
 app.get('/', (req, res) => {

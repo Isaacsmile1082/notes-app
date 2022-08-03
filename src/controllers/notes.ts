@@ -1,21 +1,16 @@
 import { TDocNotes } from './../types/Notes.d';
-import { validationResult } from 'express-validator';
 import express from 'express';
 import Note from '../schemas/Notes';
-
+import jwt from 'jsonwebtoken';
 export const createNote = async (
     req: express.Request,
     res: express.Response
 ) => {
-    const result = validationResult(req);
-    if (result.array().length) {
-        return res.json({
-            ok: false,
-            errors: result.array()
-        });
-    }
-
-    const note = new Note(req.body);
+    const encoded: jwt.JwtPayload | undefined = req.user;
+    const note = new Note({
+        ...req.body,
+        author: encoded?.data?._id
+    });
     try {
         await note.save();
         res.json({
@@ -34,14 +29,6 @@ export const deleteNote = async (
     req: express.Request,
     res: express.Response
 ) => {
-    const result = validationResult(req);
-    if (result.array().length) {
-        return res.json({
-            ok: false,
-            errors: result.array()
-        });
-    }
-
     try {
         await Note.findOneAndDelete({ _id: req.body._id });
         return res.json({
@@ -59,13 +46,6 @@ export const updateNote = async (
     req: express.Request,
     res: express.Response
 ) => {
-    const result = validationResult(req);
-    if (result.array().length) {
-        return res.json({
-            ok: false,
-            errors: result.array()
-        });
-    }
     const { _id, ...rest }: TDocNotes = req.body;
 
     try {

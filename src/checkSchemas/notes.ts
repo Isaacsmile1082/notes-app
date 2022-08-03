@@ -8,13 +8,6 @@ export const createNoteCheckSchema = checkSchema({
         notEmpty: true,
         trim: true
     },
-    author: {
-        in: ['body'],
-        errorMessage: 'author is wrong',
-        isString: true,
-        notEmpty: true,
-        trim: true
-    },
     description: {
         in: ['body'],
         errorMessage: 'description is wrong',
