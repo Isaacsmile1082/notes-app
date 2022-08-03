@@ -15,12 +15,6 @@ export const createNoteCheckSchema = checkSchema({
         notEmpty: true,
         trim: true
     },
-    date: {
-        in: ['body'],
-        errorMessage: 'Something went wrong with date',
-        isDate: true,
-        notEmpty: true
-    },
     favorite: {
         in: ['body'],
         errorMessage: 'Something went wrong with favorite',
@@ -52,13 +46,6 @@ export const updateNoteCheckSchema = checkSchema({
     title: {
         in: ['body'],
         errorMessage: 'title is wrong',
-        isString: true,
-        notEmpty: true,
-        trim: true
-    },
-    author: {
-        in: ['body'],
-        errorMessage: 'author is wrong',
         isString: true,
         notEmpty: true,
         trim: true

@@ -2,6 +2,8 @@ import User, { IUser } from '../schemas/User';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 dotenv.config();
+import jwt from 'jsonwebtoken';
+import { RequestHandler } from 'express';
 
 export const createUser = async (userData: IUser) => {
     const newUser = userData;
@@ -10,15 +12,15 @@ export const createUser = async (userData: IUser) => {
         throw new Error('This user already exists');
     }
     try {
-        const user = new User(newUser);
-        bcrypt.hash(process.env['SECRET'] as string, 10, (err, hash) => {
-            if (err) throw new Error('Error generating salt');
-            user.password = hash;
+        const hash = await bcrypt.hash(process.env['SECRET'] as string, 10);
+        const user = new User({
+            ...newUser,
+            password: hash
         });
         await user.save();
         return user;
     } catch (error) {
-        console.log(error);
+
         throw new Error('Error while saving');
     }
 };
@@ -30,7 +32,51 @@ export const findUser = async (
         const user = await User.findOne({ email: userCredentials.email });
         return user;
     } catch (error) {
-        console.log(error);
+
         throw new Error('Error performing finding user');
+    }
+};
+
+export const updateUser: RequestHandler = async (
+    req,
+    res
+) => {
+    const data: IUser = req.body;
+    const encoded: jwt.JwtPayload | undefined = req.user;
+
+    try {
+        const updatedNote = await User.findOneAndUpdate({
+            id: encoded?.data?._id
+        }, data, {
+            returnDocument: 'after'
+        });
+
+        return res.json({
+            ok: true,
+            updatedNote
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            error
+        });
+    }
+};
+
+export const deleteNote: RequestHandler = async (
+    req,
+    res
+) => {
+    try {
+        const encoded: jwt.JwtPayload | undefined = req.user;
+        await User.findOneAndDelete({ _id: encoded?.data?._id });
+        return res.json({
+            ok: true
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            error
+        });
     }
 };
