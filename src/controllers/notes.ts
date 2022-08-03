@@ -1,15 +1,16 @@
 import { TDocNotes } from './../types/Notes.d';
-import express from 'express';
+import { RequestHandler } from 'express';
 import Note from '../schemas/Notes';
 import jwt from 'jsonwebtoken';
-export const createNote = async (
-    req: express.Request,
-    res: express.Response
+export const createNote: RequestHandler = async (
+    req,
+    res
 ) => {
     const encoded: jwt.JwtPayload | undefined = req.user;
     const note = new Note({
         ...req.body,
-        author: encoded?.data?._id
+        author: encoded?.data?._id,
+        date: new Date()
     });
     try {
         await note.save();
@@ -25,12 +26,13 @@ export const createNote = async (
     }
 };
 
-export const deleteNote = async (
-    req: express.Request,
-    res: express.Response
+export const deleteNote: RequestHandler = async (
+    req,
+    res
 ) => {
     try {
-        await Note.findOneAndDelete({ _id: req.body._id });
+        const encoded: jwt.JwtPayload | undefined = req.user;
+        await Note.findOneAndDelete({ _id: req.body._id, author: encoded?.data?._id });
         return res.json({
             ok: true
         });
@@ -42,17 +44,19 @@ export const deleteNote = async (
     }
 };
 
-export const updateNote = async (
-    req: express.Request,
-    res: express.Response
+export const updateNote: RequestHandler = async (
+    req,
+    res
 ) => {
     const { _id, ...rest }: TDocNotes = req.body;
+    const encoded: jwt.JwtPayload | undefined = req.user;
 
     try {
-        const updatedNote = await Note.findOneAndUpdate(_id, rest, {
+        const updatedNote = await Note.findOneAndUpdate({
+            id: _id, author: encoded?.data?._id
+        }, rest, {
             returnDocument: 'after'
         });
-        console.log(updatedNote);
 
         return res.json({
             ok: true,

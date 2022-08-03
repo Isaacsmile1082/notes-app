@@ -13,7 +13,7 @@ export const verifyToken: RequestHandler = (req, res, next) => {
     const token = regexResult[2];
     try {
         const decoded = jwt.verify(token, process.env.SECRET as string);
-        req.body.user = decoded;
+        req.user = decoded;
         next();
     } catch (error) {
         return res.status(409).send({ error });
