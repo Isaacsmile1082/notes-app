@@ -11,7 +11,13 @@ const notesSchema = new Schema<INotes>({
     description: String,
     date: Date,
     favorite: Boolean,
-    image: String
+    image: String,
+    categories: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Categories'
+        }
+    ]
 });
 
 export default mongoose.model('Notes', notesSchema);

@@ -24,6 +24,11 @@ export const createNoteCheckSchema = checkSchema({
         in: ['body'],
         errorMessage: 'Something went wrong with image',
         isString: true
+    },
+    categories: {
+        in: ['body'],
+        errorMessage: 'Something went wrong with categories',
+        isArray: true
     }
 });
 
@@ -72,6 +77,11 @@ export const updateNoteCheckSchema = checkSchema({
         in: ['body'],
         errorMessage: 'Something went wrong with image',
         isString: true
+    },
+    categories: {
+        in: ['body'],
+        errorMessage: 'Something went wrong with categories',
+        isArray: true
     }
 });
 

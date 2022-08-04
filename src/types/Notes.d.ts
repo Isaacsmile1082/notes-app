@@ -6,6 +6,7 @@ export interface INotes {
     image: string;
     date: Date;
     favorite: boolean;
+    categories: [string];
 }
 
 /* eslint-disable */
