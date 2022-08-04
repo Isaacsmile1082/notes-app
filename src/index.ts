@@ -3,6 +3,7 @@ import notesRouter from './routes/notes';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import authRouter from './routes/auth';
+import categoryRouter from './routes/categories';
 import 'dotenv/config';
 import './logger';
 
@@ -19,8 +20,11 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.json()); // for parsing application/json
+
+// application routes
 app.use('/auth', authRouter);
 app.use('/notes', notesRouter);
+app.use('/category', categoryRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
